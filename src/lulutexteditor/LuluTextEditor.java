@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package lulutexteditor;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +24,7 @@ public class LuluTextEditor extends Application {
     
     @FXML
     private TextArea text;
+    private TextArea text_;
     
     @FXML
     private ListView error;
@@ -36,7 +34,7 @@ public class LuluTextEditor extends Application {
     
     @FXML
     private CheckBox simulate;
-    
+        
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(FXML_PATH));
@@ -45,11 +43,19 @@ public class LuluTextEditor extends Application {
         stage.setResizable(false);
         stage.setTitle(TITLE);
         stage.show();
+        text_ = ((TextArea)root.lookup("#text"));
+        text_.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            textWatching();
+        });
     }
     
     
     public void lulu(ActionEvent e){
         // TODO Save text inside a file and call LuluRun :)
+    }
+    
+    public void textWatching(){
+        System.out.println(text_.getText());
     }
     
 
