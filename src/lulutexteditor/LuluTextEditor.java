@@ -1,7 +1,8 @@
 package lulutexteditor;
 
+import java.io.File;
+import java.io.FileWriter;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +10,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -25,9 +25,6 @@ public class LuluTextEditor extends Application {
     @FXML
     private TextArea text;
     private TextArea text_;
-    
-    @FXML
-    private ListView error;
     
     @FXML
     private CheckBox reveal;
@@ -51,11 +48,26 @@ public class LuluTextEditor extends Application {
     
     
     public void lulu(ActionEvent e){
-        // TODO Save text inside a file and call LuluRun :)
+        // Saving text inside a file and calling LuluRun :)
+        File program = new File("__program.lulu");
+        try{
+            if(!program.exists()) program.createNewFile();
+            FileWriter writer = new FileWriter(program);
+            writer.write(text.getText());
+            writer.flush();
+            writer.close();
+            String cmd = "java -jar lulu.jar";
+            if(reveal.isSelected()) cmd += " -reveal";
+            if(simulate.isSelected()) cmd += " -simulate";
+            Runtime.getRuntime().exec(cmd);
+        }catch(Exception ee){
+            ee.printStackTrace();
+        }
+              
     }
     
     public void textWatching(){
-        System.out.println(text_.getText());
+       
     }
     
 
